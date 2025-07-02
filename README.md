@@ -65,8 +65,8 @@ If you want to build the images yourself, you should set the environment variabl
 
 ## API-Doc
 
-When you host the backend, there should be a swagger doc for the api endpoints: http://{host}:{port}/swagger/index.html
-You can also look this up under src\backend\api\docs
+When you host the backend, there should be a swagger doc for the api endpoints: "http://{host}:{port}/swagger/index.html".
+You can also look this up under src\backend\api\docs.
 
 ## Project Structure
 
