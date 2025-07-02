@@ -475,9 +475,25 @@ gradle-app.setting
 
 ### Secrets ###
 docker/secrets/
+secrets/
 **/secrets.txt
 
 # Database files
 *.db
 *.db-shm
 *.db-wal
+
+#other
+.gitattributes
+.vscode
+build_and_push.sh
+build_electron.sh
+build_local.sh
+dev_electron.sh
+display.py
+/docker/settings
+/docker/tokens
+*.key
+**/package-lock.json
+test_scan.sh
+

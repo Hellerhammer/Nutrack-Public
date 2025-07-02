@@ -12,7 +12,7 @@ services:
       - nutrack-backend
     restart: always
     environment:
-      - REACT_APP_BACKEND_URL=${HOST_URL:-localhost}:82
+      - REACT_APP_BACKEND_URL=${HOST_URL:-localhost}:8080
       - REACT_APP_USE_ELECTRON_IPC=${REACT_APP_USE_ELECTRON_IPC:-0}
   nutrack-backend:
     build:

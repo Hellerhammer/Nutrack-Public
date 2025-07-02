@@ -56,7 +56,7 @@ const BarcodeScanner = () => {
     if (scannerId === "") {
       setSelectedScanner(null);
       // Deactivate scanner
-      apiService.makeRequest('PUT', '/scanners/active/null')
+      apiService.makeRequest('POST', '/scanners/active', { path: "null" })
         .then(() => {
           setError(null);
         })
