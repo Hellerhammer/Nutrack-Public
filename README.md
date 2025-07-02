@@ -6,7 +6,7 @@ There is a mobile app for Android soon to be available on the Google Play Store.
 
 This whole Project was first and formost created as an exercise for me to learn Go and Docker, as well as try out different technologies, frameworks, while creating a project that I could use for my personal needs. 
 
-![Nutrack](https://github.com/hellerhammer/nutrack/blob/main/images/nutrack-web.png)
+![Nutrack](https://github.com/hellerhammer/nutrack-public/blob/main/images/nutrack-web.png)
 
 ## Key Features
 
