@@ -1,0 +1,1441 @@
+basePath: /api
+definitions:
+  gin.H:
+    additionalProperties: {}
+    type: object
+  types.ActiveProfileRequest:
+    properties:
+      profile_id:
+        type: string
+    type: object
+  types.ActiveScannerRequest:
+    properties:
+      path:
+        description: Use pointer to handle null values
+        type: string
+    type: object
+  types.ApiResponse:
+    properties:
+      data: {}
+      error:
+        type: string
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  types.AutoRecalculateNutritionValuesRequest:
+    properties:
+      enabled:
+        type: boolean
+    type: object
+  types.ConsumedFoodItemRequest:
+    properties:
+      barcode:
+        type: string
+      consumed_quantity:
+        type: number
+      date:
+        type: string
+      force_sync:
+        type: boolean
+      profile_id:
+        type: string
+    type: object
+  types.ConsumedFoodItemWithDetails:
+    properties:
+      barcode:
+        type: string
+      calories_per_100g:
+        type: number
+      carbs_per_100g:
+        type: number
+      consumed_quantity:
+        type: number
+      date:
+        type: string
+      fat_per_100g:
+        type: number
+      id:
+        type: string
+      insert_date:
+        type: string
+      name:
+        type: string
+      protein_per_100g:
+        type: number
+      serving_quantity:
+        type: number
+      serving_quantity_unit:
+        type: string
+    type: object
+  types.DetailedDishItem:
+    properties:
+      food_item:
+        $ref: '#/definitions/types.PersistentFoodItem'
+      quantity:
+        type: number
+    type: object
+  types.Dish:
+    properties:
+      barcode:
+        description: Optional Barcode
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      last_updated:
+        type: string
+      name:
+        type: string
+    type: object
+  types.DishRequest:
+    properties:
+      dish:
+        properties:
+          barcode:
+            type: string
+          name:
+            type: string
+        type: object
+      items:
+        items:
+          properties:
+            barcode:
+              type: string
+            quantity:
+              type: number
+          type: object
+        type: array
+    type: object
+  types.DishWithDetailedItems:
+    properties:
+      barcode:
+        type: string
+      created_at:
+        type: string
+      dish_items:
+        items:
+          $ref: '#/definitions/types.DetailedDishItem'
+        type: array
+      id:
+        type: string
+      last_updated:
+        type: string
+      name:
+        type: string
+    type: object
+  types.DropboxAutosyncRequest:
+    properties:
+      enabled:
+        type: boolean
+    type: object
+  types.ForceSyncRequest:
+    properties:
+      force:
+        type: boolean
+    type: object
+  types.NutritionCalculationRequest:
+    properties:
+      activityLevel:
+        description: 0-4 (sedentary to very active)
+        type: integer
+      age:
+        description: in years
+        type: integer
+      gender:
+        description: '"male", "female", or "other"'
+        type: string
+      height:
+        description: in cm
+        type: number
+      weeklyWeightChange:
+        description: in kg per week
+        type: number
+      weight:
+        description: in kg
+        type: number
+    type: object
+  types.NutritionCalculationResponse:
+    properties:
+      calories:
+        description: Daily calorie target
+        type: integer
+      carbs:
+        description: Daily carbs target in grams
+        type: integer
+      fat:
+        description: Daily fat target in grams
+        type: integer
+      proteins:
+        description: Daily protein target in grams
+        type: integer
+    type: object
+  types.PersistentFoodItem:
+    properties:
+      barcode:
+        type: string
+      carbohydrates_100g:
+        type: number
+      created_at:
+        type: string
+      energy-kcal_100g:
+        type: number
+      fat_100g:
+        type: number
+      last_updated:
+        type: string
+      name:
+        type: string
+      proteins_100g:
+        type: number
+      serving_quantity:
+        type: number
+      serving_quantity_unit:
+        type: string
+    type: object
+  types.Profile:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  types.UserSettings:
+    properties:
+      activity_level:
+        type: integer
+      birth_date:
+        type: string
+      calories:
+        type: number
+      carbs:
+        type: number
+      fat:
+        type: number
+      gender:
+        type: string
+      height:
+        type: number
+      proteins:
+        type: number
+      weekly_weight_change:
+        type: number
+      weight:
+        type: number
+    type: object
+  types.WeightTrackingRequest:
+    properties:
+      enabled:
+        type: boolean
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: Nutrition tracking application API
+  title: Nutrack API
+  version: "1.0"
+paths:
+  /autoRecalculateNutritionValues:
+    get:
+      description: Get the auto recalculate nutrition values status
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get auto recalculate nutrition values status
+      tags:
+      - autoRecalculateNutritionValues
+    post:
+      consumes:
+      - application/json
+      description: Set the auto recalculate nutrition values status
+      parameters:
+      - description: Auto recalculate nutrition values status
+        in: body
+        name: autoRecalculateNutritionValues
+        required: true
+        schema:
+          $ref: '#/definitions/types.AutoRecalculateNutritionValuesRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Set auto recalculate nutrition values status
+      tags:
+      - autoRecalculateNutritionValues
+  /consumedFoodItems:
+    post:
+      consumes:
+      - application/json
+      description: Add a new consumed food item. If the consumed food item exists,
+        the quantity will be added to the existing consumed food item. If no ProfileID
+        is provided, the active profile will be used.
+      parameters:
+      - description: Consumed food item to add
+        in: body
+        name: consumedItem
+        required: true
+        schema:
+          $ref: '#/definitions/types.ConsumedFoodItemRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Add consumed food item
+      tags:
+      - consumedFoodItems
+  /consumedFoodItems/{date}:
+    get:
+      description: Get all consumed food items for a specific date and profile. If
+        no profile ID is provided, the active profile is used.
+      parameters:
+      - description: Date in YYYY-MM-DD format
+        in: path
+        name: date
+        required: true
+        type: string
+      - description: Profile ID
+        in: query
+        name: profile_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              items:
+                $ref: '#/definitions/types.ConsumedFoodItemWithDetails'
+              type: array
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get consumed food items by date
+      tags:
+      - consumedFoodItems
+  /consumedFoodItems/{id}:
+    delete:
+      description: Delete a consumed food item by ID
+      parameters:
+      - description: Consumed food item ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Delete consumed food item
+      tags:
+      - consumedFoodItems
+    put:
+      consumes:
+      - application/json
+      description: Update a consumed food item by ID
+      parameters:
+      - description: Consumed food item ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated consumed food item data
+        in: body
+        name: consumedItem
+        required: true
+        schema:
+          $ref: '#/definitions/types.ConsumedFoodItemRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Update consumed food item
+      tags:
+      - consumedFoodItems
+  /consumedFoodItems/checkInsertAndConsume:
+    post:
+      consumes:
+      - application/json
+      description: Check if a food item exists, insert it if it doesn't, and consume
+        it. If no profile ID is provided, the active profile is used.
+      parameters:
+      - description: Consumed food item
+        in: body
+        name: consumedFoodItem
+        required: true
+        schema:
+          $ref: '#/definitions/types.ConsumedFoodItemRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Check insert and consume food item
+      tags:
+      - consumedFoodItems
+  /dishes:
+    get:
+      description: Get a list of all dishes
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              items:
+                $ref: '#/definitions/types.Dish'
+              type: array
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get all dishes
+      tags:
+      - dishes
+    post:
+      consumes:
+      - application/json
+      description: Create a new dish with ingredients
+      parameters:
+      - description: Dish to create
+        in: body
+        name: dish
+        required: true
+        schema:
+          $ref: '#/definitions/types.DishRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.Dish'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Create a new dish
+      tags:
+      - dishes
+  /dishes/{id}:
+    delete:
+      description: Delete a dish by ID
+      parameters:
+      - description: Dish ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Delete a dish
+      tags:
+      - dishes
+    get:
+      description: Get a dish by ID
+      parameters:
+      - description: Dish ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.DishWithDetailedItems'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get a dish
+      tags:
+      - dishes
+    put:
+      consumes:
+      - application/json
+      description: Update a dish by ID
+      parameters:
+      - description: Dish ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated dish data
+        in: body
+        name: dish
+        required: true
+        schema:
+          $ref: '#/definitions/types.DishRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Update a dish
+      tags:
+      - dishes
+  /dishes/{id}/convertToFoodItem:
+    post:
+      description: Convert a dish to a food item
+      parameters:
+      - description: Dish ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Convert dish to food item
+      tags:
+      - dishes
+  /dropbox/autosync:
+    get:
+      description: Get the autosync status of the Dropbox account
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get Dropbox autosync status
+      tags:
+      - database
+    post:
+      consumes:
+      - application/json
+      description: Set the autosync status of the Dropbox account
+      parameters:
+      - description: Autosync status
+        in: body
+        name: autosync
+        required: true
+        schema:
+          $ref: '#/definitions/types.DropboxAutosyncRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Set Dropbox autosync status
+      tags:
+      - database
+  /dropbox/downloadDatabase:
+    post:
+      description: Download the database from Dropbox
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Download database from Dropbox
+      tags:
+      - database
+  /dropbox/logout:
+    post:
+      description: Logout from Dropbox
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Logout from Dropbox
+      tags:
+      - authentication
+  /dropbox/status:
+    get:
+      description: Get the authentication status of the Dropbox account
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get Dropbox authentication status
+      tags:
+      - authentication
+  /dropbox/sync:
+    post:
+      consumes:
+      - application/json
+      description: Sync the database with Dropbox
+      parameters:
+      - description: Force sync
+        in: body
+        name: force
+        required: true
+        schema:
+          $ref: '#/definitions/types.ForceSyncRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Sync with Dropbox
+      tags:
+      - database
+  /dropbox/token:
+    post:
+      consumes:
+      - application/json
+      description: Exchange a Dropbox authorization code for an access token
+      parameters:
+      - description: Dropbox authorization code and code verifier
+        in: body
+        name: token
+        required: true
+        schema:
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Exchange Dropbox token
+      tags:
+      - authentication
+  /dropbox/uploadDatabase:
+    post:
+      description: Upload the database to Dropbox
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Upload database to Dropbox
+      tags:
+      - database
+  /foodItems/{barcode}:
+    delete:
+      description: Delete a food item by barcode
+      parameters:
+      - description: Food item barcode
+        in: path
+        name: barcode
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Delete a food item
+      tags:
+      - foodItems
+    put:
+      consumes:
+      - application/json
+      description: Update a food item by barcode
+      parameters:
+      - description: Food item barcode
+        in: path
+        name: barcode
+        required: true
+        type: string
+      - description: Updated food item data
+        in: body
+        name: foodItem
+        required: true
+        schema:
+          $ref: '#/definitions/types.PersistentFoodItem'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Update a food item
+      tags:
+      - foodItems
+  /foodItems/all:
+    get:
+      description: Get a list of all food items
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/types.PersistentFoodItem'
+            type: array
+      summary: Get all food items
+      tags:
+      - foodItems
+  /foodItems/check-and-insert:
+    post:
+      consumes:
+      - application/json
+      description: Check if a food item with the given barcode exists and insert it
+        if not
+      parameters:
+      - description: Food item to check and insert
+        in: body
+        name: foodItem
+        required: true
+        schema:
+          $ref: '#/definitions/types.PersistentFoodItem'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Check if food item exists and insert if not
+      tags:
+      - foodItems
+  /foodItems/manually-add:
+    post:
+      consumes:
+      - application/json
+      description: Manually add a new food item
+      parameters:
+      - description: Food item to add
+        in: body
+        name: foodItem
+        required: true
+        schema:
+          $ref: '#/definitions/types.PersistentFoodItem'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Manually add a food item
+      tags:
+      - foodItems
+  /foodItems/reset/{barcode}:
+    post:
+      description: Reset a food item to its default values by barcode
+      parameters:
+      - description: Food item barcode
+        in: path
+        name: barcode
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Reset a food item to default values
+      tags:
+      - foodItems
+  /foodItems/search:
+    get:
+      description: Search for food items by name
+      parameters:
+      - description: Search query
+        in: query
+        name: query
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              items:
+                $ref: '#/definitions/types.PersistentFoodItem'
+              type: array
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Search food items
+      tags:
+      - foodItems
+  /foodItems/searchOpenFoodFacts:
+    get:
+      description: Search for food items on OpenFoodFacts by name
+      parameters:
+      - description: Search query
+        in: query
+        name: query
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              items:
+                $ref: '#/definitions/types.PersistentFoodItem'
+              type: array
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Search food items on OpenFoodFacts
+      tags:
+      - foodItems
+  /foodItems/servingQuantity/{barcode}:
+    get:
+      description: Get the serving quantity of a food item by barcode
+      parameters:
+      - description: Food item barcode
+        in: path
+        name: barcode
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get serving quantity by barcode
+      tags:
+      - foodItems
+  /nutrition/calculate:
+    post:
+      consumes:
+      - application/json
+      description: Calculate daily nutrition targets based on user metrics
+      parameters:
+      - description: User metrics for calculation
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/types.NutritionCalculationRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.NutritionCalculationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/types.ApiResponse'
+      summary: Calculate nutrition targets
+      tags:
+      - nutrition
+  /nutrition/calculate-from-calories-and-weight:
+    post:
+      consumes:
+      - application/json
+      description: Calculate daily nutrition targets based on user metrics
+      parameters:
+      - description: User metrics for calculation
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/types.NutritionCalculationRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.NutritionCalculationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/types.ApiResponse'
+      summary: Calculate nutrition targets
+      tags:
+      - nutrition
+  /profiles:
+    get:
+      description: Get a list of all profiles
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              items:
+                $ref: '#/definitions/types.Profile'
+              type: array
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get all profiles
+      tags:
+      - profiles
+    post:
+      consumes:
+      - application/json
+      description: Create a new profile
+      parameters:
+      - description: Profile to create
+        in: body
+        name: profile
+        required: true
+        schema:
+          $ref: '#/definitions/types.Profile'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Create a profile
+      tags:
+      - profiles
+  /profiles/active:
+    get:
+      description: Get the currently active profile
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.Profile'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get active profile
+      tags:
+      - profiles
+    post:
+      consumes:
+      - application/json
+      description: Set the active profile
+      parameters:
+      - description: Profile to set as active
+        in: body
+        name: profile
+        required: true
+        schema:
+          $ref: '#/definitions/types.ActiveProfileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Set active profile
+      tags:
+      - profiles
+  /profiles/single/{id}:
+    delete:
+      description: Delete a profile by ID
+      parameters:
+      - description: Profile ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Delete a profile
+      tags:
+      - profiles
+    get:
+      description: Get a profile by ID. If no profile ID is provided, the active profile
+        is used.
+      parameters:
+      - description: Profile ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.Profile'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get a profile
+      tags:
+      - profiles
+    put:
+      consumes:
+      - application/json
+      description: Update a profile by ID. If no profile ID is provided, the active
+        profile is used.
+      parameters:
+      - description: Profile ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated profile data
+        in: body
+        name: profile
+        required: true
+        schema:
+          $ref: '#/definitions/types.Profile'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Update a profile
+      tags:
+      - profiles
+  /scanners:
+    get:
+      description: List all available scanners
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: List scanners
+      tags:
+      - scanners
+  /scanners/active:
+    post:
+      consumes:
+      - application/json
+      description: Set the active scanner
+      parameters:
+      - description: Scanner to set as active
+        in: body
+        name: scanner
+        required: true
+        schema:
+          $ref: '#/definitions/types.ActiveScannerRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Set active scanner
+      tags:
+      - scanners
+  /settings:
+    get:
+      description: Get user settings by profile ID. If no profile ID is provided,
+        the active profile is used.
+      parameters:
+      - description: Profile ID
+        in: query
+        name: profile_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.UserSettings'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get user settings
+      tags:
+      - settings
+    post:
+      consumes:
+      - application/json
+      description: Save user settings. If no profile ID is provided, the active profile
+        is used.
+      parameters:
+      - description: User settings
+        in: body
+        name: settings
+        required: true
+        schema:
+          $ref: '#/definitions/types.UserSettings'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Save user settings
+      tags:
+      - settings
+  /weightTracking:
+    get:
+      description: Get the weight tracking status
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get weight tracking status
+      tags:
+      - weightTracking
+    post:
+      consumes:
+      - application/json
+      description: Set the weight tracking status
+      parameters:
+      - description: Weight tracking status
+        in: body
+        name: weightTracking
+        required: true
+        schema:
+          $ref: '#/definitions/types.WeightTrackingRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Set weight tracking status
+      tags:
+      - weightTracking
+schemes:
+- http
+swagger: "2.0"

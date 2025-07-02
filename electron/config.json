@@ -1,0 +1,4 @@
+{
+    "BACKEND_URL": "http://localhost",
+    "USE_ELECTRON_IPC": "1"
+}

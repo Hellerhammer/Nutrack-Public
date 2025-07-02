@@ -1,0 +1,42 @@
+services:
+  nutrack-frontend:
+    build:
+      context: ../src/frontend
+      dockerfile: Dockerfile
+    image: hellerhammer/nutrack-frontend:${TAG:-latest}
+    ports:
+      - "82:80"
+    networks:
+      - nutrack-network
+    depends_on:
+      - nutrack-backend
+    restart: always
+    environment:
+      - REACT_APP_BACKEND_URL=${HOST_URL:-localhost}:82
+      - REACT_APP_USE_ELECTRON_IPC=${REACT_APP_USE_ELECTRON_IPC:-0}
+  nutrack-backend:
+    build:
+      context: ../src/backend
+      dockerfile: Dockerfile
+    image: hellerhammer/nutrack-backend:${TAG:-latest}
+    devices:
+      - "/dev/input:/dev/input"
+    ports:
+      - "8080:8080"
+    networks:
+      - nutrack-network
+    privileged: true
+    restart: always
+    environment:
+      - GIN_MODE=release
+      - ALLOWED_IPS=${HOST_URL:-localhost}:82, localhost, nutrack-frontend
+      - HOST_URL=${HOST_URL:-localhost}:8080
+    volumes:
+      - ./:/app/data
+      - ./tokens:/app/tokens
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+
+networks:
+  nutrack-network:
+    driver: bridge

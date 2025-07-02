@@ -1,0 +1,56 @@
+{
+    "name": "nutrack-electron",
+    "version": "1.0.0",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron .",
+        "dev": "electron .",
+        "build:electron": "cd ../src/frontend && npm run build:electron && xcopy /E /I /Y build ..\\..\\electron\\build && copy ..\\..\\electron\\config.json ..\\..\\electron\\build\\resources\\",
+        "postinstall": "electron-builder install-app-deps"
+    },
+    "build": {
+        "appId": "com.nutrack.app",
+        "productName": "Nutrack",
+        "directories": {
+            "output": "dist"
+        },
+        "files": [
+            "build/**/*",
+            "main.js",
+            "preload.js"
+        ],
+        "extraResources": [
+            {
+                "from": "build/resources/",
+                "to": ".",
+                "filter": [
+                    "**/*"
+                ]
+            },
+            {
+                "from": ".",
+                "to": ".",
+                "filter": [
+                    "config.json"
+                ]
+            }
+        ],
+        "win": {
+            "target": "portable"
+        },
+        "linux": {
+            "target": "AppImage"
+        },
+        "mac": {
+            "target": "dmg"
+        }
+    },
+    "dependencies": {
+        "electron-is-dev": "^2.0.0"
+    },
+    "devDependencies": {
+        "cross-env": "^7.0.3",
+        "electron": "^25.0.0",
+        "electron-builder": "^24.0.0"
+    }
+}
