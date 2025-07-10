@@ -132,7 +132,7 @@ func (s *FoodService) GetProductData(barcode string) (*data.PersistentFoodItem, 
 
 	// URL encode the barcode to handle special characters and spaces
 	encodedBarcode := url.QueryEscape(barcode)
-	resp, err := http.Get("https://world.openfoodfacts.org/api/v3/product/" + encodedBarcode + "?fields=code,product_name,nutriments,serving_quantity,serving_quantity_unit.json")
+	resp, err := http.Get("https://world.openfoodfacts.org/api/v3/product/" + encodedBarcode + "?fields=code,product_name,nutriments,serving_quantity,serving_quantity_unit")
 	if err != nil {
 		// Instead of returning error, create default item for non-barcode items
 		return &data.PersistentFoodItem{
@@ -305,6 +305,7 @@ func (s *FoodService) CheckAndInsertFoodItem(barcode string) error {
 
 	newFoodData, err := s.GetProductData(barcode)
 	if err != nil {
+		fmt.Printf("Failed to get product data for barcode %s: %v\n", barcode, err)
 		newFoodData = &data.PersistentFoodItem{
 			Barcode:             barcode,
 			Name:                "",

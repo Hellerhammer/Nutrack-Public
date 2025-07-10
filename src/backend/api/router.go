@@ -90,7 +90,6 @@ func NewRouter() *Router {
 func (r *Router) SetupAndRunApiServer() {
 	// Initialize swagger handler with the correct host
 	swaggerHandler := ginSwagger.WrapHandler(swaggerFiles.Handler)
-	
 	// Use our custom swagger handler that handles host replacement
 	r.engine.GET("/swagger/*any", CustomSwaggerHandler(swaggerHandler))
 	config := cors.DefaultConfig()
