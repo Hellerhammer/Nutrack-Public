@@ -4,9 +4,9 @@ Nutrack is an application for tracking daily nutrition and calorie intake. The a
 
 There is a mobile app for Android soon to be available on the Google Play Store.
 
-This whole Project was first and formost created as an exercise for me to learn Go and Docker, as well as try out different technologies, frameworks, while creating a project that I could use for my personal needs. 
+This whole Project was first and formost created as an exercise for me to learn a bit of Go, React and Docker, as well as try out different technologies, frameworks, while creating a project that I could use for my personal needs. 
 
-![Nutrack](https://github.com/hellerhammer/nutrack/blob/main/images/nutrack-web.png)
+![Nutrack](https://github.com/hellerhammer/nutrack-public/blob/main/images/nutrack-web.png)
 
 ## Key Features
 
@@ -62,6 +62,11 @@ This whole Project was first and formost created as an exercise for me to learn 
 
 When you build the images from the repository, the client ID for Dropbox is not included. The client ID for Dropbox is currently stored in the built images as an environment variable.
 If you want to build the images yourself, you should set the environment variable `DROPBOX_CLIENT_ID` while building the images, which you can either just request per Mail from kachonkdev@gmail.com or use your own, i will probably just include the ID in the repo in the future.
+
+## API-Doc
+
+When you host the backend, there should be a swagger doc for the api endpoints: "http://{host}:{port}/swagger/index.html".
+You can also look this up under src\backend\api\docs.
 
 ## Project Structure
 
