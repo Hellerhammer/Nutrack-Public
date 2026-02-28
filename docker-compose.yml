@@ -37,8 +37,8 @@ services:
     restart: always
     environment:
       - GIN_MODE=release
-      - ALLOWED_IPS=${HOST_URL:-localhost}:82, localhost, nutrack-frontend
-      - HOST_URL=${HOST_URL:-localhost}:8080
+      - ALLOWED_IPS=${HOST_URL:-localhost}:${BACKEND_PORT:-3000}, localhost, nutrack-frontend
+      - HOST_URL=${HOST_URL:-localhost}:${BACKEND_PORT:-8080}
     volumes:
       - ./:/app/data
       - ./tokens:/app/tokens
