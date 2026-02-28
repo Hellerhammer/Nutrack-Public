@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
     image: hellerhammer/nutrack-frontend:${TAG:-latest}
     ports:
-        - "${FRONTEND_PORT:-3000}:80"
+      - "${FRONTEND_PORT:-3000}:80"
     networks:
       - nutrack-network
     depends_on:
