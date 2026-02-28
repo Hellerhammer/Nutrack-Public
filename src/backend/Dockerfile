@@ -51,7 +51,8 @@ ENV CONTAINER=true
 ENV DROPBOX_CLIENT_ID=$DROPBOX_CLIENT_ID
 ENV HOST_URL=localhost:8080
 
-ENV TZ=Europe/Berlin
+ARG TZ=Europe/Berlin
+ENV TZ=$TZ
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 EXPOSE 8080

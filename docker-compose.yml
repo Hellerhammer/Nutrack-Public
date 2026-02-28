@@ -18,6 +18,8 @@ services:
     build:
       context: src/backend
       dockerfile: Dockerfile
+      args:
+        - TZ=${TZ:-Europe/Berlin}
     image: hellerhammer/nutrack-backend:${TAG:-latest}
     devices:
       - "/dev/input:/dev/input"
