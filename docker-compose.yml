@@ -12,7 +12,7 @@ services:
       - nutrack-backend
     restart: always
     environment:
-      - REACT_APP_BACKEND_URL=${HOST_URL:-localhost}
+      - REACT_APP_BACKEND_URL=${HOST_URL:-localhost}:${BACKEND_PORT:-8080}
       - REACT_APP_USE_ELECTRON_IPC=${REACT_APP_USE_ELECTRON_IPC:-0}
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:80"]
