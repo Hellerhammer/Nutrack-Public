@@ -1,1 +1,11 @@
 go 1.25.0
+
+use (
+	./api
+	./data
+	./main
+	./messaging
+	./service
+	./settings
+	./types
+)
