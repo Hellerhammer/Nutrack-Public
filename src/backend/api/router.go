@@ -99,6 +99,9 @@ func (r *Router) SetupAndRunApiServer() {
 	config.AllowCredentials = true
 	r.engine.Use(cors.New(config))
 
+	r.engine.GET("/health", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"status": "ok"})
+	})
 	api := r.engine.Group("/api")
 	{
 		api.POST("/foodItems/check-and-insert", r.checkAndInsertFoodItem)
