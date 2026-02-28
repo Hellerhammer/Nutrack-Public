@@ -25,21 +25,12 @@ This whole Project was first and formost created as an exercise for me to learn 
 
 ## Installation with Docker Compose
 
-1. Copy docker-compose.yml and .env.example to the root directory of the project.
-
-2. Adjust the values in the `.env` file as needed.
-
-3. Pull the required Docker images:
+1. Start the application and build:
    ```bash
-   docker-compose pull
+   docker-compose up -d --build
    ```
 
-4. Start the application:
-   ```bash
-   docker-compose up -d
-   ```
-
-5. Open the application in your browser:
+2. Open the application in your browser:
    ```
    http://localhost:82
    ```

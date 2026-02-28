@@ -1,7 +1,7 @@
 services:
   nutrack-frontend:
     build:
-      context: ../src/frontend
+      context: src/frontend
       dockerfile: Dockerfile
     image: hellerhammer/nutrack-frontend:${TAG:-latest}
     ports:
@@ -16,7 +16,7 @@ services:
       - REACT_APP_USE_ELECTRON_IPC=${REACT_APP_USE_ELECTRON_IPC:-0}
   nutrack-backend:
     build:
-      context: ../src/backend
+      context: src/backend
       dockerfile: Dockerfile
     image: hellerhammer/nutrack-backend:${TAG:-latest}
     devices:
