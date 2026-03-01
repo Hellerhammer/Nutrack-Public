@@ -49,11 +49,6 @@ This whole Project was first and formost created as an exercise for me to learn 
 
 - `ALLOWED_IPS`: A comma-separated list of allowed IP addresses from where the frontend can access the backend
 
-### secrets
-
-When you build the images from the repository, the client ID for Dropbox is not included. The client ID for Dropbox is currently stored in the built images as an environment variable.
-If you want to build the images yourself, you should set the environment variable `DROPBOX_CLIENT_ID` while building the images, which you can either just request per Mail from kachonkdev@gmail.com or use your own, i will probably just include the ID in the repo in the future.
-
 ## API-Doc
 
 When you host the backend, there should be a swagger doc for the api endpoints: "http://{host}:{port}/swagger/index.html".
