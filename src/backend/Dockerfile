@@ -1,6 +1,9 @@
 # Use an official Go image (Debian-based)
 FROM golang:1.23
 
+# Define build argument for the Client ID
+ARG DROPBOX_CLIENT_ID="wtxrzaiqahkjucf"
+
 # Install Python and required packages
 RUN apt-get update && \
     apt-get install -y python3 python3-pip python3-venv python3-evdev && \
@@ -45,7 +48,7 @@ RUN go build -o /app/main/main ./main/
 
 ENV BACKEND_URL=http://nutrack-backend:8080
 ENV CONTAINER=true
-ENV DROPBOX_CLIENT_ID=""
+ENV DROPBOX_CLIENT_ID=$DROPBOX_CLIENT_ID
 ENV HOST_URL=localhost:8080
 
 ARG TZ=Europe/Berlin
