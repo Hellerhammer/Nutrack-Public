@@ -39,6 +39,7 @@ services:
       - GIN_MODE=release
       - ALLOWED_IPS=${HOST_URL:-localhost}:${FRONTEND_PORT:-3000}, localhost, nutrack-frontend
       - HOST_URL=${HOST_URL:-localhost}:${BACKEND_PORT:-8080}
+      - DROPBOX_CLIENT_ID=${DROPBOX_CLIENT_ID:-}
     volumes:
       - ./:/app/data
       - ./tokens:/app/tokens
